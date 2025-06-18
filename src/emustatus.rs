@@ -7,7 +7,7 @@ pub struct Chip8Emu{
     dt:u8,//Delay timer
     st:u8,//Sound timer
     stack:Vec<u16>,//stack
-    display: [[u8; 32]; 64],//displayvalues
+    pub display: [[u8; 32]; 64],//displayvalues
 }
 
 impl Chip8Emu{ //Functions for emulator
@@ -37,6 +37,6 @@ impl Chip8Emu{ //Functions for emulator
     }
 
 
-    pub fn displaytest(){}
+    pub fn displaytest(&self){}
 
 }
