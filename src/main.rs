@@ -17,29 +17,31 @@ fn main() -> eframe::Result {
                     if ui.button("Open").clicked() {}
                     if ui.button("Display test").clicked() {
                         emulator.displaytest();
-                        let loc = emulator.display;
-                        for (x, row) in loc.iter().enumerate() {
-                            for (y, element) in row.iter().enumerate() {
-                                println!("Element at [{x}][{y}]: {element}");
-                                if element == &1u8{ //draw a white square
-                                    let rect = egui::Rect::from_min_size(
-                                        egui::pos2(y as f32 * 5.0, x as f32 * 5.0),
-                                        egui::vec2(5.0, 5.0)
-                                    );
-                                    ui.painter().rect_filled(rect, 0.0, egui::Color32::WHITE);
-                                }
-                                else if element == &0u8 { //draw a black square
-                                    let rect = egui::Rect::from_min_size(
-                                        egui::pos2(y as f32 * 5.0, x as f32 * 5.0),
-                                        egui::vec2(5.0, 5.0)
-                                    );
-                                    ui.painter().rect_filled(rect, 0.0, egui::Color32::BLACK);
-                                }
-                            }
-                        }
                     }
                 });
             });
+
+            let loc = emulator.display;
+            for (x, row) in loc.iter().enumerate() {
+                for (y, element) in row.iter().enumerate() {
+                    println!("Element at [{x}][{y}]: {element}");
+                    if element == &1u8 {
+                        //draw a white square
+                        let rect = egui::Rect::from_min_size(
+                            egui::pos2(y as f32 * 5.0, x as f32 * 5.0),
+                            egui::vec2(5.0, 5.0),
+                        );
+                        ui.painter().rect_filled(rect, 0.0, egui::Color32::WHITE);
+                    } else if element == &0u8 {
+                        //draw a black square
+                        let rect = egui::Rect::from_min_size(
+                            egui::pos2(y as f32 * 5.0, x as f32 * 5.0),
+                            egui::vec2(5.0, 5.0),
+                        );
+                        ui.painter().rect_filled(rect, 0.0, egui::Color32::BLACK);
+                    }
+                }
+            }
         });
     })
 }
