@@ -37,6 +37,11 @@ impl Chip8Emu{ //Functions for emulator
     }
 
 
-    pub fn displaytest(&self){}
+    pub fn displaytest(&mut self){
+        for i in 0..32 {
+            self.display[63][i] = 1;
+        }
+        
+    }
 
 }
