@@ -20,7 +20,7 @@ impl Chip8Emu{ //Functions for emulator
 
     pub fn new() -> Self{
         Chip8Emu{
-            memory: [0; 4096],
+            memory: [0; 4096],//can fit about 3500 instructions in here
             gpr: [0;16],
             ir: 0,
             pc: 0x200,
@@ -34,22 +34,25 @@ impl Chip8Emu{ //Functions for emulator
 
     }
 
-    pub fn memorymap(&self){ //Hardcoded for now
-
-
-
-
+    pub fn dumpmemory(&self){ //Hardcoded for now
+        for x in 0..self.memory.len(){
+            println!("0x{:02x}",self.memory[x]); //print mem in base16
+        }
     }
 
 
-    pub fn openself(&self) {
+    pub fn openself(&mut self) {
 
         let val = dump_rom();
 
         match val{ //don't propogate,just handle here
             Ok(ok) => {
                 //println!("Vector is {:?}",ok);
-                println!("First entry is 0x{:02x}",ok[0]) //map the data to SOMETHING then address it
+                println!("First entry is 0x{:02x}",ok[0]); //map the data to SOMETHING then address it
+
+                for x in 0..ok.len() {
+                    self.memory[512 + x] = ok[x];
+                }
             },
             Err(e) => panic!("Error is {e}"),
         }

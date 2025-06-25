@@ -22,6 +22,7 @@ fn main() -> eframe::Result {
                 if ui.button("Load file").clicked() {
 
                     emulator.openself();
+                    emulator.dumpmemory();
                 }
             });
         });
