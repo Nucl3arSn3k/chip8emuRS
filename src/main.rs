@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![allow(rustdoc::missing_crate_level_docs)]
 mod emustatus;
+mod opcodeparse;
 use eframe::egui;
 fn main() -> eframe::Result {
     env_logger::init();
@@ -15,8 +16,12 @@ fn main() -> eframe::Result {
         egui::menu::bar(ui, |ui| {
             ui.menu_button("File", |ui| {
                 if ui.button("Open").clicked() {}
-                if ui.button("Display test").clicked() {
+                if ui.button("Display test").clicked() { //Fire the displaytest,it actually works now
                     emulator.displaytest();
+                }
+                if ui.button("Load file").clicked() {
+
+                    emulator.openself();
                 }
             });
         });

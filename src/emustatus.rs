@@ -1,3 +1,8 @@
+use core::panic;
+
+use crate::opcodeparse::dump_rom;
+
+
 pub struct Chip8Emu{
     memory: [u8; 4096], //Memory for chip8
     gpr: [u8;16],//gp registers
@@ -37,7 +42,20 @@ impl Chip8Emu{ //Functions for emulator
     }
 
 
-    pub fn displaytest(&mut self){
+    pub fn openself(&self) {
+
+        let val = dump_rom();
+
+        match val{ //don't propogate,just handle here
+            Ok(ok) => {
+                //println!("Vector is {:?}",ok);
+                println!("First entry is 0x{:02x}",ok[0]) //map the data to SOMETHING then address it
+            },
+            Err(e) => panic!("Error is {e}"),
+        }
+    }
+
+    pub fn displaytest(&mut self){ //Sets bottom display row to white pixels
         for i in 0..32 {
             self.display[63][i] = 1;
         }
