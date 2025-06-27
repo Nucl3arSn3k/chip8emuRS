@@ -10,3 +10,39 @@ pub fn dump_rom() -> Result<Vec<u8>> {
    
    Ok(state_vec)
 }
+
+
+pub fn parser_gen(x:Vec<u8>) {
+   for z in 512..x.len(){
+      let f_p = x[z] as u16;
+      let s_p = x[z+1] as u16;
+
+      let opcode: u16 = (f_p << 8) | (s_p);
+
+
+      match opcode >> 12{
+         0x0000 =>{
+
+            match opcode{
+               0x00E0 =>{ //Clear display
+
+
+
+               }
+
+
+
+            }
+
+
+
+         }
+
+      }
+
+   }
+
+
+
+
+}
