@@ -1,10 +1,10 @@
 use core::panic;
 
 use crate::opcodeparse::dump_rom;
-
+use crate::opcodeparse::parser_gen;
 
 pub struct Chip8Emu{
-    memory: [u8; 4096], //Memory for chip8
+    pub memory: [u8; 4096], //Memory for chip8
     gpr: [u8;16],//gp registers
     ir:u16, //index register
     pc:u16,//program counter register
@@ -63,6 +63,13 @@ impl Chip8Emu{ //Functions for emulator
             self.display[63][i] = 1;
         }
         
+    }
+
+
+    pub fn execute(&mut self){
+
+        parser_gen( self);
+
     }
 
 }
