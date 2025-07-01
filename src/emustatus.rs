@@ -7,11 +7,11 @@ pub struct Chip8Emu{
     pub memory: [u8; 4096], //Memory for chip8
     gpr: [u8;16],//gp registers
     ir:u16, //index register
-    pc:u16,//program counter register
-    sp:u8,//stack pointer
+    pub pc:u16,//program counter register
+    pub sp:u8,//stack pointer
     dt:u8,//Delay timer
     st:u8,//Sound timer
-    stack:Vec<u16>,//stack
+    pub stack:Vec<u16>,//stack
     pub display: [[u8; 32]; 64],//displayvalues
 }
 
@@ -23,7 +23,7 @@ impl Chip8Emu{ //Functions for emulator
             memory: [0; 4096],//can fit about 3500 instructions in here
             gpr: [0;16],
             ir: 0,
-            pc: 0x200,
+            pc: 0x200, //beginning of array
             sp: 0,
             dt: 0,
             st: 0,
