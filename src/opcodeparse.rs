@@ -195,7 +195,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
 
                 0x6 => {
                     let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
-                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+                    //let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
 
                     let lsb = emu_state.gpr[regdex1] & 0x01; //grab lsb
 
@@ -232,7 +232,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
 
                 0xE =>{//TODO: unfinished opcode
                     let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
-                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+                    //let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
                     //grab MSB
                     let msb = (emu_state.gpr[regdex1] & 0x80) >> 7;  // Extract MSB and shift to position 0
                     if msb == 1 {  // Now this works!
@@ -254,6 +254,25 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
 
             }
 
+            0x9000 => match opcode{
+                _ => {
+                    let regdex1 = ((opcode & 0x0F00) >> 8) as usize;
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize;
+
+                    if emu_state.gpr[regdex1] != emu_state.gpr[regdex2]{
+                        emu_state.pc +=2;
+                    }
+                }
+
+            }
+
+            0xA000 => match opcode{
+                _ => {
+                    emu_state.ir = opcode & 0x0FFF;
+
+
+                }
+            }
 
 
             _ => {}

@@ -6,7 +6,7 @@ use crate::opcodeparse::parser_gen;
 pub struct Chip8Emu{
     pub memory: [u8; 4096], //Memory for chip8
     pub gpr: [u8;16],//gp registers
-    ir:u16, //index register
+    pub ir:u16, //index register
     pub pc:u16,//program counter register
     pub sp:u8,//stack pointer
     dt:u8,//Delay timer
