@@ -13,12 +13,12 @@ pub fn dump_rom() -> Result<Vec<u8>> {
 
 pub fn parser_gen(emu_state: &mut Chip8Emu) {
     for z in 512..emu_state.memory.len() {
-        let f_p = emu_state.memory[z] as u16;
-        let s_p = emu_state.memory[z + 1] as u16;
+        let f_p = emu_state.memory[z] as u16; //First byte
+        let s_p = emu_state.memory[z + 1] as u16;  //Second byte
 
-        let opcode: u16 = (f_p << 8) | (s_p);
+        let opcode: u16 = (f_p << 8) | (s_p); //combine into the full instruction
 
-        match opcode >> 12 {
+        match opcode >> 12 { //extract highest nibble
             0x0000 => {
                 match opcode {
                     0x00E0 => {
@@ -56,9 +56,9 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
                 match opcode {
                     _ => {
                         let addr = opcode & 0x0FFF;
-                        emu_state.sp += 1; //stack pointer incremented
+                        
                         emu_state.stack[emu_state.sp as usize] = emu_state.pc; //current pc top of stack
-
+                        emu_state.sp += 1; //stack pointer incremented
                         emu_state.pc = addr;
                     }
                 }
@@ -119,7 +119,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
                 _ => {
                     let val = (opcode & 0x00FF) as u8; //kk
                     let regdex = ((opcode & 0x0F00) >> 8) as usize; //grabs reg Vx
-                    let resint = emu_state.gpr[regdex] + val; //resulting int
+                    let resint = emu_state.gpr[regdex] + val; //resulting int. Potential panic here
 
                     emu_state.gpr[regdex] = resint;
 
@@ -141,20 +141,20 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
                     let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
                     let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
 
-                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] | emu_state.gpr[regdex2] //bitwise OR,store in Vx
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] | emu_state.gpr[regdex2]; //bitwise OR,store in Vx
 
                 }
 
                 0x2 => {
                     let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
                     let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
-                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] & emu_state.gpr[regdex2]//Bitwise AND
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] & emu_state.gpr[regdex2];//Bitwise AND
                 }
 
                 0x3=> {
                     let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
                     let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
-                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] ^ emu_state.gpr[regdex2] //bitwise XOR
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] ^ emu_state.gpr[regdex2]; //bitwise XOR
                 }
 
                 0x4=>{
@@ -208,6 +208,8 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
 
                         emu_state.gpr[15] = 0;
                     }
+
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] / 2; //div by 2
                 }
 
                 0x7 =>{
@@ -232,7 +234,15 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
                     let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
                     let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
                     //grab MSB
+                    let msb = (emu_state.gpr[regdex1] & 0x80) >> 7;  // Extract MSB and shift to position 0
+                    if msb == 1 {  // Now this works!
+                        emu_state.gpr[15] = 1;
+                    }
+                    else {
+                        emu_state.gpr[15] = 0;
+                    }
 
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] *2;
                 }
 
                 _ => {
