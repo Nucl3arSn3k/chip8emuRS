@@ -93,8 +93,158 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
                 _ => {
                     let reg_index = ((opcode & 0x0F00) >> 8) as usize; // vx register 
                     let reg_index_2 = ((opcode & 0x00F0) >> 4) as usize; // vy register 
+
+
+                    if emu_state.gpr[reg_index] == emu_state.gpr[reg_index_2]{
+
+                        emu_state.pc +=2;
+                    }
                 }
             },
+
+            0x6000 => match opcode{
+                _ => {
+                    let val = (opcode & 0x00FF) as u8; //kk
+                    let regdex = ((opcode & 0x0F00) >> 8) as usize; //grabs reg Vx
+                    //let resint = emu_state.gpr[regdex] + val; //resulting int
+
+                    emu_state.gpr[regdex] = val;
+
+                }
+
+
+            }
+
+            0x7000 => match opcode{
+                _ => {
+                    let val = (opcode & 0x00FF) as u8; //kk
+                    let regdex = ((opcode & 0x0F00) >> 8) as usize; //grabs reg Vx
+                    let resint = emu_state.gpr[regdex] + val; //resulting int
+
+                    emu_state.gpr[regdex] = resint;
+
+                }
+
+            }
+
+            0x8000 => match opcode & 0x000F{
+                //let op = opcode & 0x000F;
+                0x0 => {
+                    let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex2]; //stores Vy in Vx
+
+                }
+
+                0x1 => {
+                    let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] | emu_state.gpr[regdex2] //bitwise OR,store in Vx
+
+                }
+
+                0x2 => {
+                    let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] & emu_state.gpr[regdex2]//Bitwise AND
+                }
+
+                0x3=> {
+                    let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex1] ^ emu_state.gpr[regdex2] //bitwise XOR
+                }
+
+                0x4=>{
+                    let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+                    let res = emu_state.gpr[regdex1] as u16 + emu_state.gpr[regdex2] as u16; //casting to u16 to avoid overflow
+                    if res > 255{
+
+                        emu_state.gpr[15] = 1;
+                    }
+                    else{
+                        emu_state.gpr[15] = 0;
+                    }
+
+                    emu_state.gpr[regdex1] = (res & 0xFF) as u8;
+
+                }
+
+                0x5=>{
+
+                    let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+                    if emu_state.gpr[regdex1] > emu_state.gpr[regdex2] {
+                        emu_state.gpr[15] =1;
+
+
+                    }
+                    else{
+
+                        emu_state.gpr[15] =0;
+                    }
+
+
+                    let sub = emu_state.gpr[regdex1] - emu_state.gpr[regdex2];
+
+                    emu_state.gpr[regdex1] = sub;
+                }
+
+                0x6 => {
+                    let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+
+                    let lsb = emu_state.gpr[regdex1] & 0x01; //grab lsb
+
+
+                    if lsb == 1{
+                        emu_state.gpr[15] =1; //VF is 1
+
+                    }
+                    else{
+
+                        emu_state.gpr[15] = 0;
+                    }
+                }
+
+                0x7 =>{
+
+                    let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+
+                    if emu_state.gpr[regdex2] > emu_state.gpr[regdex1]{
+                        emu_state.gpr[15] = 1;
+
+                    }
+                    else{
+
+                        emu_state.gpr[15] = 0;
+                    }
+
+                    emu_state.gpr[regdex1] = emu_state.gpr[regdex2] - emu_state.gpr[regdex1];
+
+                }
+
+                0xE =>{//TODO: unfinished opcode
+                    let regdex1 =((opcode & 0x0F00) >> 8) as usize; //reg vx
+                    let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
+                    //grab MSB
+
+                }
+
+                _ => {
+
+
+
+                }
+
+
+            }
+
+
 
             _ => {}
         }
