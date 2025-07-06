@@ -16,3 +16,4 @@ env_logger = { version = "0.11.5", default-features = false, features = [
     "auto-color",
     "humantime",
 ] }
+rand = "0.9.1"

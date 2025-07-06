@@ -1,4 +1,5 @@
 use crate::emustatus::{self, Chip8Emu};
+use rand::prelude::*;
 use std::fs::File;
 use std::io::{Read, Result};
 pub fn dump_rom() -> Result<Vec<u8>> {
@@ -269,11 +270,37 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
             0xA000 => match opcode{
                 _ => {
                     emu_state.ir = opcode & 0x0FFF;
-
-
                 }
             }
 
+            0xB000 => match opcode{
+                _ =>{
+                    //let val = opcode & 0x0FFF;
+                    emu_state.pc = (opcode & 0x0FFF) + (emu_state.gpr[0]as u16);
+
+
+                }
+
+            }
+
+            0xC000 => match opcode{
+                _ =>{
+                    let regdex1 = ((opcode & 0x0F00) >> 8) as usize;
+                    let mut rng = rand::rng();
+                    let mut num:u8;
+                    //let regdex2 = ((opcode & 0x00F0) >> 4) as usize;
+                    let dat =( opcode & 0x0FF) as u8;
+                    let mut nums: Vec<u8> = (0..255).collect();
+                    nums.shuffle(&mut rng);
+                    let res = nums.choose(&mut rng);
+                    match res{
+                        Some(x) => num = *x,//gotta deref
+                        None => panic!("Shouldn't be none here!"),
+                    }
+
+                    emu_state.gpr[regdex1]=dat & num;
+                }
+            }
 
             _ => {}
         }
