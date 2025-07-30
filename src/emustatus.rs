@@ -9,8 +9,8 @@ pub struct Chip8Emu{
     pub ir:u16, //index register
     pub pc:u16,//program counter register
     pub sp:u8,//stack pointer
-    dt:u8,//Delay timer
-    st:u8,//Sound timer
+    pub dt:u8,//Delay timer
+    pub st:u8,//Sound timer
     pub stack:Vec<u16>,//stack
     pub display: [[u8; 32]; 64],//displayvalues
 }
