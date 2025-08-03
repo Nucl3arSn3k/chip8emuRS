@@ -13,6 +13,7 @@ pub struct Chip8Emu{
     pub st:u8,//Sound timer
     pub stack:Vec<u16>,//stack
     pub display: [[u8; 32]; 64],//displayvalues
+    pub keypad: [bool; 16],
 }
 
 impl Chip8Emu{ //Functions for emulator
@@ -29,6 +30,7 @@ impl Chip8Emu{ //Functions for emulator
             st: 0,
             stack: Vec::new(),
             display: [[0;32];64],
+            keypad:[false;16],
         }
 
 
