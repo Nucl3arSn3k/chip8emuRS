@@ -3,6 +3,9 @@
 mod emustatus;
 mod opcodeparse;
 use eframe::egui;
+use tinyfiledialogs::open_file_dialog;
+
+use crate::opcodeparse::dump_rom;
 fn main() -> eframe::Result {
     env_logger::init();
     let options = eframe::NativeOptions {
@@ -15,13 +18,32 @@ fn main() -> eframe::Result {
     egui::TopBottomPanel::top("menu_bar").show(ctx, |ui| {
         egui::menu::bar(ui, |ui| {
             ui.menu_button("File", |ui| {
-                if ui.button("Open").clicked() {}
+                if ui.button("Open").clicked() {
+                    let choice = open_file_dialog("Open File", "", Some((&[".ch8"], "CHIP-8 ROM Files")));
+                    match choice{
+                        Some(o) => {
+
+                            println!("File string: {}",o);
+                            let vec = dump_rom(o);
+
+                            match vec{
+                                Ok(o) => {
+                                    emulator.mapmem(o);
+
+                                },
+                                Err(_) => todo!(),
+                            }
+                            
+                        },
+                        None => {println!("No file selected")},
+                    }
+                }
                 if ui.button("Display test").clicked() { //Fire the displaytest,it actually works now
                     emulator.displaytest();
                 }
                 if ui.button("Load file").clicked() {
 
-                    emulator.openself();
+                    //emulator.openself();
                     emulator.dumpmemory();
                 }
             });

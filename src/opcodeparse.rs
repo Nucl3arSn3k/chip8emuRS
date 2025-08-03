@@ -3,8 +3,8 @@ use rand::prelude::*;
 use std::fs::File;
 use std::io::{Read, Result};
 
-pub fn dump_rom() -> Result<Vec<u8>> {
-    let rom_path = std::env::current_dir()?.join("1-ibm-logo.ch8");
+pub fn dump_rom(entry_string:String) -> Result<Vec<u8>> {
+    let rom_path = entry_string;
     println!("{:?}", rom_path);
     let mut state_vec: Vec<u8> = Vec::new();
     let mut game = File::open(&rom_path)?;
