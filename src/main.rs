@@ -29,6 +29,7 @@ fn main() -> eframe::Result {
                             match vec{
                                 Ok(o) => {
                                     emulator.mapmem(o);
+                                    emulator.dumpmemory();
 
                                 },
                                 Err(_) => todo!(),

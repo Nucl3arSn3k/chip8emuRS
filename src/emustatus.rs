@@ -1,4 +1,5 @@
 use core::panic;
+use std::fs;
 
 use crate::opcodeparse::dump_rom;
 use crate::opcodeparse::parser_gen;
@@ -44,12 +45,18 @@ impl Chip8Emu {
             
             self.memory[start..end].copy_from_slice(&input_buf);
         }
+
+        println!("Memory mapped");
     }
     pub fn dumpmemory(&self) {
         //Hardcoded for now
+        let mut membuffer:Vec<String> = Vec::new();
         for x in 0..self.memory.len() {
-            println!("0x{:02x}", self.memory[x]); //print mem in base16
+            membuffer.push(format!("0x{:02x}", self.memory[x]));//print mem in base16
         }
+
+        let contents = membuffer.join("\n");
+        fs::write("memdump.txt", contents).expect("File write failed");
     }
 
     pub fn displaytest(&mut self) {
