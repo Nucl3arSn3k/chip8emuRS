@@ -28,9 +28,10 @@ fn main() -> eframe::Result {
 
                             match vec{
                                 Ok(o) => {
-                                    emulator.mapmem(o);
+                                    println!("{:?}",o); //mem is valid in here think we cheat by just 
+                                    emulator.mapmem(o);//but it IS Here actually!
                                     emulator.dumpmemory();
-
+                                    opcodeparse::parser_gen(&mut emulator);
                                 },
                                 Err(_) => todo!(),
                             }

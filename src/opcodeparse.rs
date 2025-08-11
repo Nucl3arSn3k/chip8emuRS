@@ -12,8 +12,16 @@ pub fn dump_rom(entry_string:String) -> Result<Vec<u8>> {
     Ok(state_vec)
 }
 
+pub fn execute_instructions(emu_state: &mut Chip8Emu){
+    let opcode = ((emu_state.memory[emu_state.pc as usize] as u16) << 8) 
+                | (emu_state.memory[emu_state.pc as usize + 1] as u16);
+
+
+}
+
+
 pub fn parser_gen(emu_state: &mut Chip8Emu) {
-    for z in 512..emu_state.memory.len() {
+    for z in (512..emu_state.memory.len() -1).step_by(2) {
         let f_p = emu_state.memory[z] as u16; //First byte
         let s_p = emu_state.memory[z + 1] as u16; //Second byte
         let opcode: u16 = (f_p << 8) | (s_p); //combine into the full instruction
@@ -23,6 +31,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu) {
             0x0000 => {
                 match opcode {
                     0x00E0 => {
+                        println!("Clear screen!");
                         //Clear display
                         for x in 0..64 {
                             for i in 0..32 {

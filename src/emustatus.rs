@@ -37,7 +37,7 @@ impl Chip8Emu {
 
     //pub fn gameopen()
 
-    pub fn mapmem(&mut self, input_buf: Vec<u8>) {
+    pub fn mapmem(&mut self, input_buf: Vec<u8>) { //absolutely cooks the instr. COULD be due to to aggro cut
         let start = 512;
         let end = start + input_buf.len(); 
 
@@ -45,7 +45,9 @@ impl Chip8Emu {
             
             self.memory[start..end].copy_from_slice(&input_buf);
         }
-
+        println!("First few bytes at 0x200: {:02X} {:02X} {:02X} {:02X}", 
+                 self.memory[512], self.memory[513], self.memory[514], self.memory[515]);
+    
         println!("Memory mapped");
     }
     pub fn dumpmemory(&self) {
