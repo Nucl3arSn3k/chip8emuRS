@@ -31,7 +31,8 @@ fn main() -> eframe::Result {
                                     println!("{:?}",o); //mem is valid in here think we cheat by just 
                                     emulator.mapmem(o);//but it IS Here actually!
                                     emulator.dumpmemory();
-                                    opcodeparse::parser_gen(&mut emulator);
+                                    //opcodeparse::parser_gen(&mut emulator);
+                                    opcodeparse::execute_instructions(&mut emulator);
                                 },
                                 Err(_) => todo!(),
                             }

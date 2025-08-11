@@ -69,6 +69,6 @@ impl Chip8Emu {
     }
 
     pub fn execute(&mut self) {
-        parser_gen(self);
+        //parser_gen(self);
     }
 }
