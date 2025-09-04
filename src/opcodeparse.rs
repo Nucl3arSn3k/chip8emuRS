@@ -25,7 +25,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
 
     match opcode >> 12 {
         //extract highest nibble
-        0x0000 => {
+        0x0 => {
             match opcode {
                 0x00E0 => {
                     println!("Clear screen!");
@@ -47,7 +47,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         }
 
-        0x1000 => {
+        0x1 => {
             match opcode {
                 _ => {
                     let addr = opcode & 0x0FFF;
@@ -56,7 +56,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         }
 
-        0x2000 => {
+        0x2 => {
             match opcode {
                 _ => {
                     let addr = opcode & 0x0FFF;
@@ -67,7 +67,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         }
 
-        0x3000 => {
+        0x3 => {
             //Fix
             match opcode {
                 _ => {
@@ -80,7 +80,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         }
 
-        0x4000 => {
+        0x4 => {
             match opcode {
                 _ => {
                     let val = (opcode & 0x00FF) as u8; //kk
@@ -92,7 +92,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         }
 
-        0x5000 => match opcode {
+        0x5 => match opcode {
             _ => {
                 let reg_index = ((opcode & 0x0F00) >> 8) as usize; // vx register
                 let reg_index_2 = ((opcode & 0x00F0) >> 4) as usize; // vy register
@@ -102,7 +102,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         },
 
-        0x6000 => match opcode {
+        0x6 => match opcode {
             _ => {
                 println!("Loading");
                 let val = (opcode & 0x00FF) as u8; //kk
@@ -111,7 +111,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         },
 
-        0x7000 => match opcode {
+        0x7 => match opcode {
             _ => {
                 let val = (opcode & 0x00FF) as u8; //kk
                 let regdex = ((opcode & 0x0F00) >> 8) as usize; //grabs reg Vx
@@ -120,7 +120,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         },
 
-        0x8000 => match opcode & 0x000F {
+        0x8 => match opcode & 0x000F {
             0x0 => {
                 let regdex1 = ((opcode & 0x0F00) >> 8) as usize; //reg vx
                 let regdex2 = ((opcode & 0x00F0) >> 4) as usize; //reg vy
@@ -208,7 +208,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             _ => {}
         },
 
-        0x9000 => match opcode {
+        0x9 => match opcode {
             _ => {
                 let regdex1 = ((opcode & 0x0F00) >> 8) as usize;
                 let regdex2 = ((opcode & 0x00F0) >> 4) as usize;
@@ -218,7 +218,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         },
 
-        0xA000 => match opcode {
+        0xA => match opcode {
             
             _ => {
                 println!("General purpouse load");
@@ -226,13 +226,13 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         },
 
-        0xB000 => match opcode {
+        0xB => match opcode {
             _ => {
                 emu_state.pc = (opcode & 0x0FFF) + (emu_state.gpr[0] as u16);
             }
         },
 
-        0xC000 => match opcode {
+        0xC => match opcode {
             _ => {
                 let regdex1 = ((opcode & 0x0F00) >> 8) as usize;
                 let mut rng = rand::rng();
@@ -249,7 +249,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         },
 
-        0xD000 => match opcode {
+        0xD => match opcode {
             _ => {
                 let regdex1 = ((opcode & 0x0F00) >> 8) as usize; // Vx
                 let regdex2 = ((opcode & 0x00F0) >> 4) as usize; // Vy
@@ -295,7 +295,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             }
         },
 
-        0xE000 => match opcode & 0x00FF {
+        0xE => match opcode & 0x00FF {
             0x9E => {
                 // SKP Vx - Skip next instruction if key with value of Vx is pressed
                 let regdex = ((opcode & 0x0F00) >> 8) as usize;
@@ -317,7 +317,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
             _ => {}
         },
 
-        0xF000 => match opcode & 0x00FF {
+        0xF => match opcode & 0x00FF {
             0x07 => {
                 // LD Vx, DT - Set Vx = delay timer value
                 let regdex = ((opcode & 0x0F00) >> 8) as usize;
