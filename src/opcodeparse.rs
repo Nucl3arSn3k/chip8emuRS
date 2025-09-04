@@ -13,9 +13,9 @@ pub fn dump_rom(entry_string: String) -> Result<Vec<u8>> {
 }
 
 pub fn execute_instructions(emu_state: &mut Chip8Emu) {
-    let opcode = ((emu_state.memory[emu_state.pc as usize] as u16) << 8)
-        | (emu_state.memory[emu_state.pc as usize + 1] as u16);
-
+    let opcode = ((emu_state.memory[emu_state.pc as usize] as u16) << 8) | (emu_state.memory[emu_state.pc as usize + 1] as u16);
+    println!("program counter is currently at 0x{:03X} ({})",emu_state.pc, emu_state.pc);
+    println!("Opcode: 0x{:04X}", opcode);
     emu_state.pc += 2;  // Default increment
     parser_gen(emu_state, opcode);
 }
