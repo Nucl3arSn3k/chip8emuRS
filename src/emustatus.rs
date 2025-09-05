@@ -29,7 +29,7 @@ impl Chip8Emu {
             sp: 0,
             dt: 0,
             st: 0,
-            stack: Vec::new(),
+            stack: vec![0; 16],
             display: [[0; 32]; 64],
             keypad: [false; 16],
         }
