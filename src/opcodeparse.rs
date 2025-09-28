@@ -30,8 +30,8 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
                 0x00E0 => {
                     println!("Clear screen!");
                     //Clear display
-                    for x in 0..64 {
-                        for i in 0..32 {
+                    for x in 0..32 { 
+                        for i in 0..64 {
                             emu_state.display[x][i] = 0;
                         }
                     }
@@ -271,11 +271,11 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
                         let bit = (sprite_byte >> (7 - col)) & 1;
 
                         // Calculate screen position with wrapping
-                        let screen_x = (start_x + col) % 64;
+                        let screen_x = (start_x + col) %  64;
                         let screen_y = (start_y + row) % 32;
 
                         // Get current pixel value
-                        let current_pixel = emu_state.display[screen_x][screen_y];
+                        let current_pixel = emu_state.display[screen_y][screen_x];
 
                         // XOR the bit with current pixel
                         let new_pixel = current_pixel ^ bit;
@@ -286,7 +286,7 @@ pub fn parser_gen(emu_state: &mut Chip8Emu, opcode: u16) {
                         }
 
                         // Update the display
-                        emu_state.display[screen_x][screen_y] = new_pixel;
+                        emu_state.display[screen_y][screen_x] = new_pixel;
                     }
                 }
 

@@ -13,7 +13,7 @@ pub struct Chip8Emu {
     pub dt: u8,                  //Delay timer
     pub st: u8,                  //Sound timer
     pub stack: Vec<u16>,         //stack
-    pub display: [[u8; 32]; 64], //displayvalues
+    pub display: [[u8; 64]; 32], //displayvalues
     pub keypad: [bool; 16],
 }
 
@@ -30,7 +30,7 @@ impl Chip8Emu {
             dt: 0,
             st: 0,
             stack: vec![0; 16],
-            display: [[0; 32]; 64],
+            display: [[0; 64]; 32],
             keypad: [false; 16],
         }
     }
@@ -60,13 +60,13 @@ impl Chip8Emu {
         let contents = membuffer.join("\n");
         fs::write("memdump.txt", contents).expect("File write failed");
     }
-
+    /* 
     pub fn displaytest(&mut self) {
         //Sets bottom display row to white pixels
         for i in 0..32 {
             self.display[63][i] = 1;
         }
-    }
+    }*/
 
     pub fn execute(&mut self) {
         //parser_gen(self);
